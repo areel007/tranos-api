@@ -11,7 +11,7 @@ const app = express();
 const authMiddleware = require("./middlewares/auth");
 
 const blogPostRoute = require("./routes/blog.post");
-const applicationRoute = require("./routes/application");ae
+const applicationRoute = require("./routes/application");
 const partnerRoute = require("./routes/home/partner");
 const heroRoute = require("./routes/home/hero");
 const servicesRoute = require("./routes/home/services");
@@ -29,6 +29,7 @@ const maintenanceRoute = require("./routes/services/maintenance");
 const heroImageOne = require("./routes/home/hero-images/hero-images-one");
 const heroImageTwo = require("./routes/home/hero-images/hero-image-two");
 const heroImageThree = require("./routes/home/hero-images/hero-image-three");
+const footerText = require("./routes/home/footer");
 
 // Middlewares
 app.use(cors());
@@ -61,5 +62,6 @@ app.use("/api/v1/services/maintenance", maintenanceRoute);
 app.use("/api/v1/hero-image-one", heroImageOne);
 app.use("/api/v1/hero-image-two", upload.single("imageUrl"), heroImageTwo);
 app.use("/api/v1/hero-image-three", upload.single("imageUrl"), heroImageThree);
+app.use("/api/v1", footerText);
 
 module.exports = app;

@@ -22,7 +22,7 @@ exports.getFooter = async (req, res) => {
 
     if (!footerText) {
       return res.status(404).json({
-        error: "hero text not found",
+        error: "not found",
       });
     }
 

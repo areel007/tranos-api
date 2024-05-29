@@ -84,7 +84,7 @@ exports.deleteCaseStudy = async (req, res) => {
       });
     }
 
-    // Upload the updated image files to the file system
+    // Deleting image files to the file system
     for (const imageUrl of caseStudy.imageUrl.split(",")) {
       fs.unlink(imageUrl, (err) => {
         if (err && err.code !== "ENOENT") {

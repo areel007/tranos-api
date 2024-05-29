@@ -30,6 +30,10 @@ const heroImageOne = require("./routes/home/hero-images/hero-images-one");
 const heroImageTwo = require("./routes/home/hero-images/hero-image-two");
 const heroImageThree = require("./routes/home/hero-images/hero-image-three");
 const footerText = require("./routes/home/footer");
+const tranosEliteRange = require("./routes/products/tranos-elite-range");
+const siemensSivacon = require("./routes/products/siemens-sivacon");
+const atexPowerPanels = require("./routes/products/atex-power-panels");
+const siemensSimoprime = require("./routes/products/siemens-simoprime");
 
 // Middlewares
 app.use(cors());
@@ -63,5 +67,9 @@ app.use("/api/v1/hero-image-one", heroImageOne);
 app.use("/api/v1/hero-image-two", upload.single("imageUrl"), heroImageTwo);
 app.use("/api/v1/hero-image-three", upload.single("imageUrl"), heroImageThree);
 app.use("/api/v1", footerText);
+app.use("/api/v1/products", tranosEliteRange);
+app.use("/api/v1/products", siemensSivacon);
+app.use("/api/v1/products", atexPowerPanels);
+app.use("/api/v1/products", siemensSimoprime);
 
 module.exports = app;

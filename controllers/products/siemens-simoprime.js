@@ -37,10 +37,10 @@ exports.addSiemensSimoprime = async (req, res) => {
   }
 };
 
-exports.getSiemensSimoprime = (req, res) => {
+exports.getSiemensSimoprime = async (req, res) => {
   try {
     const { id } = req.params;
-    const siemensSimoprime = SiemensSimoprime.findById(id);
+    const siemensSimoprime = await SiemensSimoprime.findById(id);
 
     if (!siemensSimoprime) {
       return res.status(404).json({

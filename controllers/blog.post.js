@@ -2,20 +2,28 @@ const BlogPost = require("../models/blog.post");
 const cloudinary = require("../utils/cloudinary");
 
 exports.createBlogPost = async (req, res) => {
+  let path = "";
   try {
-    const options = {
-      folder: "tranos/blog",
-      resource_type: "auto",
-    };
-    const result = await cloudinary.uploader.upload(req.file.path, options);
+    if (req.files) {
+      const files = Array.isArray(req.files) ? req.files : [req.files];
+      files.forEach((file) => {
+        if (Array.isArray(file)) {
+          file.forEach((singleFile) => {
+            path = path + singleFile.path + ",";
+          });
+        } else {
+          path = path + file.path + ",";
+        }
+      });
+      path = path.substring(0, path.lastIndexOf(","));
+    }
     const { title, subtitle, content } = req.body;
 
     const newBlogPost = new BlogPost({
       title,
       subtitle,
       content,
-      imageUrl: result.secure_url,
-      cloudinaryId: result.public_id,
+      imageUrl: path,
     });
 
     await newBlogPost.save();
@@ -53,9 +61,9 @@ exports.getBlog = async (req, res) => {
     const blog = await BlogPost.findById(id);
 
     res.status(200).json({
-      status: 'success',
-      blog
-    })
+      status: "success",
+      blog,
+    });
   } catch (error) {
     res.status(500).json({
       status: "fail",

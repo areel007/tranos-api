@@ -34,6 +34,12 @@ const tranosEliteRange = require("./routes/products/tranos-elite-range");
 const siemensSivacon = require("./routes/products/siemens-sivacon");
 const atexPowerPanels = require("./routes/products/atex-power-panels");
 const siemensSimoprime = require("./routes/products/siemens-simoprime");
+const siemensSimosec = require("./routes/products/siemens-simosec");
+const tranosTrac = require("./routes/products/cable-management/tranos-trac");
+const tranosEris = require("./routes/products/cable-management/tranos-eris");
+const tranosEllis = require("./routes/products/cable-management/tranos-ellis");
+const standardPalletRacks = require("./routes/products/warehouse/standard-pallet");
+const industrialWarehouseShelving = require("./routes/products/warehouse/industrial-warehouse-shelving");
 
 // Middlewares
 app.use(cors());
@@ -43,7 +49,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-app.use("/api/v1/blog", upload.single("imageUrl"), blogPostRoute);
+app.use("/api/v1/blog", blogPostRoute);
 app.use(
   "/api/v1/application",
   applicationUpload.single("resumeUrl"),
@@ -71,5 +77,11 @@ app.use("/api/v1/products", tranosEliteRange);
 app.use("/api/v1/products", siemensSivacon);
 app.use("/api/v1/products", atexPowerPanels);
 app.use("/api/v1/products", siemensSimoprime);
+app.use("/api/v1/products", siemensSimosec);
+app.use("/api/v1/products", tranosTrac);
+app.use("/api/v1/products", tranosEris);
+app.use("/api/v1/products", tranosEllis);
+app.use("/api/v1/products", standardPalletRacks);
+app.use("/api/v1/products", industrialWarehouseShelving);
 
 module.exports = app;

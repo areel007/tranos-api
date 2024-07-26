@@ -1,7 +1,7 @@
-const SiemensSimoprime = require("../../models/products/siemens-simoprime");
+const SiemensSimosec = require("../../models/products/siemens-simosec");
 const fs = require("fs");
 
-exports.addSiemensSimoprime = async (req, res) => {
+exports.addSiemensSimosec = async (req, res) => {
   let path = "";
   try {
     if (req.files) {
@@ -19,13 +19,13 @@ exports.addSiemensSimoprime = async (req, res) => {
     }
     const { title, description } = req.body;
 
-    const newSiemensSimoprime = new SiemensSimoprime({
+    const newSiemensSimosec = new SiemensSimosec({
       title,
       description,
-      siemensSimoprimeImages: path,
+      siemensSimosecImages: path,
     });
 
-    await newSiemensSimoprime.save();
+    await newSiemensSimosec.save();
 
     res.status(201).json({
       msg: "successfully added",
@@ -37,19 +37,19 @@ exports.addSiemensSimoprime = async (req, res) => {
   }
 };
 
-exports.getSiemensSimoprime = async (req, res) => {
+exports.getSiemensSimosec = async (req, res) => {
   try {
     const { id } = req.params;
-    const siemensSimoprime = await SiemensSimoprime.findById(id);
+    const siemensSimosec = await SiemensSimosec.findById(id);
 
-    if (!siemensSimoprime) {
+    if (!siemensSimosec) {
       return res.status(404).json({
         msg: "not found",
       });
     }
 
     res.status(200).json({
-      siemensSimoprime,
+      siemensSimosec,
     });
   } catch (error) {
     res.status(500).json({
@@ -58,19 +58,17 @@ exports.getSiemensSimoprime = async (req, res) => {
   }
 };
 
-exports.updateSiemensSimoprime = async (req, res) => {
+exports.updateSiemensSimosec = async (req, res) => {
   let path = "";
   try {
     const { id } = req.params;
     const { title, description } = req.body;
 
     // Find the existing document in the database
-    const siemensSimoprime = await SiemensSimoprime.findById(id);
+    const siemensSimosec = await SiemensSimosec.findById(id);
 
     if (req.files) {
-      for (const imageUrl of siemensSimoprime.siemensSimoprimeImages.split(
-        ","
-      )) {
+      for (const imageUrl of siemensSimosec.siemensSimosecImages.split(",")) {
         fs.unlink(imageUrl, (err) => {
           if (err && err.code !== "ENOENT") {
             // Ignore file not found error
@@ -92,21 +90,21 @@ exports.updateSiemensSimoprime = async (req, res) => {
       });
     } else {
       // If no new files are uploaded, retain the existing image paths
-      path = siemensSimoprime.siemensSimoprimeImages;
+      path = siemensSimosec.siemensSimosecImages;
     }
 
-    if (!siemensSimoprime) {
+    if (!siemensSimosec) {
       return res.status(404).json({
         msg: "not found",
       });
     }
 
-    await SiemensSimoprime.findByIdAndUpdate(
+    await SiemensSimosec.findByIdAndUpdate(
       id,
       {
         title,
         description,
-        siemensSimoprimeImages: path,
+        siemensSimosecImages: path,
       },
       { new: true }
     );

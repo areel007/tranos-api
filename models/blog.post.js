@@ -15,9 +15,6 @@ const blogSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
-  cloudinaryId: {
-    type: String,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

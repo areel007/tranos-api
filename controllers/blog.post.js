@@ -1,33 +1,16 @@
 const BlogPost = require("../models/blog.post");
-const cloudinary = require("../utils/cloudinary");
 
 exports.createBlogPost = async (req, res) => {
-  let path = "";
   try {
-    if (req.files) {
-      const files = Array.isArray(req.files) ? req.files : [req.files];
-      files.forEach((file) => {
-        if (Array.isArray(file)) {
-          file.forEach((singleFile) => {
-            path = path + singleFile.path + ",";
-          });
-        } else {
-          path = path + file.path + ",";
-        }
-      });
-      path = path.substring(0, path.lastIndexOf(","));
-    }
-    const { title, subtitle, content } = req.body;
+    const { title, subtitle, content, blogImage } = req.body;
 
     const newBlogPost = new BlogPost({
       title,
       subtitle,
       content,
-      imageUrl: path,
+      blogImage,
     });
-
     await newBlogPost.save();
-
     res.status(201).json({
       status: "success",
       newBlogPost,
@@ -35,7 +18,7 @@ exports.createBlogPost = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: "fail",
-      error,
+      error: error.message,
     });
   }
 };

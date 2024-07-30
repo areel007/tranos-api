@@ -12,7 +12,7 @@ const blogSchema = new mongoose.Schema({
     type: Object,
     required: [true, "Blog must have a detail"],
   },
-  imageUrl: {
+  blogImage: {
     type: String,
   },
   createdAt: {

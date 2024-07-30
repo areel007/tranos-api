@@ -85,3 +85,5 @@ app.use("/api/v1/products", standardPalletRacks);
 app.use("/api/v1/products", industrialWarehouseShelving);
 
 module.exports = app;
+
+// DATABASE=mongodb+srv://delz:uN7Wo6kF2MYtLncl@cluster0.zacl9s2.mongodb.net/tranos

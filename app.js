@@ -26,9 +26,7 @@ const videoRoute = require("./routes/home/why-video");
 const fabricationRoute = require("./routes/services/fabrication");
 const installationRoute = require("./routes/services/installation");
 const maintenanceRoute = require("./routes/services/maintenance");
-const heroImageOne = require("./routes/home/hero-images/hero-images-one");
-const heroImageTwo = require("./routes/home/hero-images/hero-image-two");
-const heroImageThree = require("./routes/home/hero-images/hero-image-three");
+const heroImages = require("./routes/home/hero-images/hero.images");
 const footerText = require("./routes/home/footer");
 const tranosEliteRange = require("./routes/products/tranos-elite-range");
 const siemensSivacon = require("./routes/products/siemens-sivacon");
@@ -69,9 +67,7 @@ app.use("/api/v1/home-video", videoRoute);
 app.use("/api/v1/services/fabrication", fabricationRoute);
 app.use("/api/v1/services/installation", installationRoute);
 app.use("/api/v1/services/maintenance", maintenanceRoute);
-app.use("/api/v1/hero-image-one", heroImageOne);
-app.use("/api/v1/hero-image-two", upload.single("imageUrl"), heroImageTwo);
-app.use("/api/v1/hero-image-three", upload.single("imageUrl"), heroImageThree);
+app.use("/api/v1/hero-images", heroImages);
 app.use("/api/v1", footerText);
 app.use("/api/v1/products", tranosEliteRange);
 app.use("/api/v1/products", siemensSivacon);
@@ -85,5 +81,7 @@ app.use("/api/v1/products", standardPalletRacks);
 app.use("/api/v1/products", industrialWarehouseShelving);
 
 module.exports = app;
+
+// DATABASE=mongodb+srv://delz:uN7Wo6kF2MYtLncl@cluster0.zacl9s2.mongodb.net/tranos
 
 // DATABASE=mongodb+srv://delz:uN7Wo6kF2MYtLncl@cluster0.zacl9s2.mongodb.net/tranos

@@ -1,4 +1,4 @@
-const SiemensSivacon = require("../../models/products/siemens-sivacon");
+const SiemensSivacon = require("../../models/products/tranos-elite-range");
 const fs = require("fs");
 
 exports.addSiemensSivacon = async (req, res) => {
@@ -9,13 +9,13 @@ exports.addSiemensSivacon = async (req, res) => {
       files.forEach((file) => {
         if (Array.isArray(file)) {
           file.forEach((singleFile) => {
-            path = path + singleFile.path + ",";
+            path += singleFile.path + ",";
           });
         } else {
-          path = path + file.path + ",";
+          path += file.path + ",";
         }
       });
-      path = path.substring(0, path.lastIndexOf(","));
+      path = path.slice(0, -1); // Remove the trailing comma
     }
     const { title, description, features } = req.body;
     const siemensSivacon = new SiemensSivacon({
@@ -32,9 +32,7 @@ exports.addSiemensSivacon = async (req, res) => {
       siemensSivacon,
     });
   } catch (error) {
-    res.status(500).json({
-      error,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -44,18 +42,12 @@ exports.getSiemensSivacon = async (req, res) => {
     const siemensSivacon = await SiemensSivacon.findById(id);
 
     if (!siemensSivacon) {
-      return res.status(404).json({
-        msg: "not found",
-      });
+      return res.status(404).json({ msg: "not found" });
     }
 
-    res.status(200).json({
-      siemensSivacon,
-    });
+    res.status(200).json({ siemensSivacon });
   } catch (error) {
-    res.status(500).json({
-      error,
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -65,39 +57,36 @@ exports.updateSiemensSivacon = async (req, res) => {
     const { id } = req.params;
     const { title, description, features } = req.body;
 
-    // Find the existing document in the database
     const siemensSivacon = await SiemensSivacon.findById(id);
 
+    if (!siemensSivacon) {
+      return res.status(404).json({ msg: "not found" });
+    }
+
     if (req.files) {
-      for (const imageUrl of siemensSivacon.siemensSivaconImages.split(",")) {
+      const oldImages = siemensSivacon.siemensSivaconImages.split(",");
+      oldImages.forEach((imageUrl) => {
         fs.unlink(imageUrl, (err) => {
           if (err && err.code !== "ENOENT") {
-            // Ignore file not found error
             console.error("Error deleting file:", err);
             return res.status(500).json({ message: "Error deleting file" });
           }
         });
-      }
+      });
 
       const files = Array.isArray(req.files) ? req.files : [req.files];
       files.forEach((file) => {
         if (Array.isArray(file)) {
           file.forEach((singleFile) => {
-            path = path + singleFile.path + ",";
+            path += singleFile.path + ",";
           });
         } else {
-          path = path + file.path + ",";
+          path += file.path + ",";
         }
       });
+      path = path.slice(0, -1); // Remove the trailing comma
     } else {
-      // If no new files are uploaded, retain the existing image paths
-      path = siemensSivacon.siemensSivaconImages;
-    }
-
-    if (!siemensSivacon) {
-      return res.status(404).json({
-        msg: "not found",
-      });
+      path = siemensSivacon.siemensSivaconImages; // Retain existing images if no new files are uploaded
     }
 
     await SiemensSivacon.findByIdAndUpdate(
@@ -111,13 +100,9 @@ exports.updateSiemensSivacon = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({
-      msg: "tranos elite updated successfully",
-    });
+    res.status(200).json({ msg: "Tranos Elite updated successfully" });
   } catch (error) {
     console.error("Error updating Tranos Elite Range:", error);
-    res.status(500).json({
-      error: error.message,
-    });
+    res.status(500).json({ error: error.message });
   }
 };

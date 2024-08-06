@@ -8,12 +8,10 @@ const upload = multer({ storage });
 
 const installation = require("../../controllers/services/installation");
 
-router
-  .route("/")
-  .post(upload.single("imageUrl"), installation.postInstallationImage);
+router.route("/").post(installation.postInstallationImage);
 router
   .route("/:id")
   .get(installation.getInstallation)
-  .patch(upload.single("imageUrl"), installation.updateInstallation);
+  .patch(installation.updateInstallation);
 
 module.exports = router;

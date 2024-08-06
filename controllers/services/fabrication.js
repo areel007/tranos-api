@@ -1,11 +1,10 @@
 const Fabrication = require("../../models/services/fabrication");
-// const cloudinary = require("../../utils/cloudinary");
-const fs = require("fs");
 
 exports.postFabrication = async (req, res) => {
+  const { fabrication } = req.body;
   try {
     const newFabrication = new Fabrication({
-      fabricationImageUrl: req.file.path,
+      fabricationImageUrl: fabrication,
     });
 
     await newFabrication.save();
@@ -40,41 +39,26 @@ exports.getFabrication = async (req, res) => {
 };
 
 exports.updateFabrication = async (req, res) => {
-  const fabricationId = req.params.id;
   try {
-    const fabrication = await Fabrication.findById(fabricationId);
+    const { id } = req.params; // Assuming the banner ID is passed as a URL parameter
+    const { fabrication } = req.body; // Assuming the updated banner data is in the request body
 
-    if (!fabrication) {
+    // Find the banner by ID and update it with the new data
+    const updatedFabrication = await Fabrication.findByIdAndUpdate(
+      id,
+      { fabricationImageUrl: fabrication },
+      { new: true, runValidators: true } // `new: true` returns the updated document
+    );
+
+    if (!updatedFabrication) {
       return res.status(404).json({
-        msg: "resource not found",
+        status: "fail",
+        message: "Banner not found",
       });
     }
 
-    // Delete the old banner file from the file system
-    try {
-      for (const fabricationUrl of fabrication.fabricationImageUrl.split(",")) {
-        await fs.promises.unlink(fabricationUrl);
-      }
-    } catch (err) {
-      if (err.code !== "ENOENT") {
-        // Ignore file not found error
-        console.error("Error deleting file:", err);
-        return res.status(500).json({ message: "Error deleting file" });
-      }
-    }
-
-    const updatedFabrication = await Fabrication.findByIdAndUpdate(
-      fabricationId,
-      {
-        fabricationImageUrl: req.file.path,
-      },
-      { new: true }
-    );
-
-    await updatedFabrication.save();
-
     res.status(200).json({
-      msg: "successfully updated",
+      status: "success",
       updatedFabrication,
     });
   } catch (error) {

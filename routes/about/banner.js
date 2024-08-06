@@ -9,9 +9,6 @@ const banner = require("../../controllers/about/banner");
 
 router.route("/banner").post(upload.single("banner"), banner.addBanner);
 
-router
-  .route("/banner/:id")
-  .get(banner.getBanner)
-  .patch(upload.single("banner"), banner.updateBanner);
+router.route("/banner/:id").get(banner.getBanner).patch(banner.updateBanner);
 
 module.exports = router;

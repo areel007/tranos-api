@@ -1,11 +1,10 @@
 const Maintenance = require("../../models/services/maintenance");
-// const cloudinary = require("../../utils/cloudinary");
-const fs = require("fs");
 
 exports.postMaintenance = async (req, res) => {
+  const { maintenance } = req.body;
   try {
     const newMaintenance = new Maintenance({
-      maintenanceImageUrl: req.file.path,
+      maintenanceImageUrl: maintenance,
     });
 
     await newMaintenance.save();
@@ -40,42 +39,27 @@ exports.getMaintenance = async (req, res) => {
 };
 
 exports.updateMaintenance = async (req, res) => {
-  const maintenanceId = req.params.id;
   try {
-    const maintenance = await Maintenance.findById(maintenanceId);
+    const { id } = req.params; // Assuming the banner ID is passed as a URL parameter
+    const { maintenance } = req.body; // Assuming the updated banner data is in the request body
 
-    if (!maintenance) {
+    // Find the banner by ID and update it with the new data
+    const updatedMaintenance = await Maintenance.findByIdAndUpdate(
+      id,
+      { maintenanceImageUrl: maintenance },
+      { new: true, runValidators: true } // `new: true` returns the updated document
+    );
+
+    if (!updatedMaintenance) {
       return res.status(404).json({
-        msg: "resource not found",
+        status: "fail",
+        message: "Banner not found",
       });
     }
 
-    // Delete the old banner file from the file system
-    try {
-      for (const maintenanceUrl of maintenance.maintenanceImageUrl.split(",")) {
-        await fs.promises.unlink(maintenanceUrl);
-      }
-    } catch (err) {
-      if (err.code !== "ENOENT") {
-        // Ignore file not found error
-        console.error("Error deleting file:", err);
-        return res.status(500).json({ message: "Error deleting file" });
-      }
-    }
-
-    const updatedMaintenance = await Maintenance.findByIdAndUpdate(
-      maintenanceId,
-      {
-        maintenanceImageUrl: req.file.path,
-      },
-      { new: true }
-    );
-
-    await updatedMaintenance.save();
-
     res.status(200).json({
-      msg: "successfully updated",
-      updatedMaintenance: maintenance,
+      status: "success",
+      updatedMaintenance,
     });
   } catch (error) {
     res.status(500).json({

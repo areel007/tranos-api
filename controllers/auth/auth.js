@@ -22,16 +22,18 @@ exports.registerUser = async (req, res) => {
 
     await user.save();
 
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
+    res.json({ msg: "user successfully registered" });
 
-    jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
-      res.json({ token });
-    });
+    // const payload = {
+    //   user: {
+    //     id: user.id,
+    //   },
+    // };
+
+    // jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
+    //   if (err) throw err;
+    //   res.json({ token });
+    // });
   } catch (error) {
     res.status(500).json({ msg: "Server Error" });
   }

@@ -1,4 +1,4 @@
-const SiemensSivacon = require("../../models/products/tranos-elite-range");
+const SiemensSivacon = require("../../models/products/siemens-sivacon");
 const fs = require("fs");
 
 exports.addSiemensSivacon = async (req, res) => {

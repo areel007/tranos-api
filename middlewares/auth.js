@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-const authMiddleware = (req, res, next) => {
+const auth = (req, res, next) => {
   const token = req.header("x-auth-token");
 
   if (!token) {
@@ -11,11 +11,10 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded.user;
-    sessionStorage.setItem('isLogged', JSON.stringify(true))
     next();
-  } catch (error) {
-    res.status(401).json({ msg: "Invalid token" });
+  } catch (err) {
+    res.status(401).json({ msg: "Token is not valid" });
   }
 };
 
-module.exports = authMiddleware;
+module.exports = auth;

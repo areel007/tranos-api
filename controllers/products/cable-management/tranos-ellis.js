@@ -59,7 +59,7 @@ exports.getTranosEllis = async (req, res) => {
 exports.updateTranosEllis = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description } = req.body;
+    const { description, title } = req.body;
 
     // Find the existing document in the database
     const tranosEllis = await TranosEllis.findById(id);
@@ -92,6 +92,7 @@ exports.updateTranosEllis = async (req, res) => {
       id,
       {
         description,
+        title,
         tranosEllisImages: newImagesPath,
       },
       { new: true }

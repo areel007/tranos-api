@@ -63,7 +63,7 @@ exports.loginUser = async (req, res) => {
 
     jwt.sign(payload, JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, role: user.role });
     });
   } catch (error) {
     res.status(500).json({ msg: "Server Error" });
@@ -79,6 +79,12 @@ exports.changePassword = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
+    }
+
+    if (user.role !== "super admin") {
+      return res.status(401).json({
+        msg: "This user does not have authorisation to change password",
+      });
     }
 
     // Check if the current password is correct

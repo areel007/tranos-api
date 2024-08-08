@@ -38,6 +38,7 @@ const tranosEris = require("./routes/products/cable-management/tranos-eris");
 const tranosEllis = require("./routes/products/cable-management/tranos-ellis");
 const standardPalletRacks = require("./routes/products/warehouse/standard-pallet");
 const industrialWarehouseShelving = require("./routes/products/warehouse/industrial-warehouse-shelving");
+const getUsers = require("./routes/auth/user");
 
 // Middlewares
 app.use(cors());
@@ -79,6 +80,7 @@ app.use("/api/v1/products", tranosEris);
 app.use("/api/v1/products", tranosEllis);
 app.use("/api/v1/products", standardPalletRacks);
 app.use("/api/v1/products", industrialWarehouseShelving);
+app.use("/api/v1/auth", getUsers);
 
 module.exports = app;
 

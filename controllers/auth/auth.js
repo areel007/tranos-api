@@ -80,12 +80,11 @@ exports.changePassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-
-    if (user.role !== "super admin") {
-      return res.status(401).json({
-        msg: "This user does not have authorisation to change password",
-      });
-    }
+    // if (user.role !== "super admin") {
+    //   return res.status(401).json({
+    //     msg: "This user does not have authorisation to change password",
+    //   });
+    // }
 
     // Check if the current password is correct
     const isMatch = await bcrypt.compare(currentPassword, user.password);

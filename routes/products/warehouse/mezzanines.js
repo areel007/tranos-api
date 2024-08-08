@@ -7,10 +7,10 @@ const storage = require("../../../middlewares/file.uplaod");
 const upload = multer({ storage });
 
 router
-  .route("/warehouse/standard-pallet-racks")
+  .route("/warehouse/mezzanines")
   .post(upload.array("imageUrl"), mezzanines.addMezzanines);
 router
-  .route("/warehouse/standard-pallet-racks/:id")
+  .route("/warehouse/mezzanines/:id")
   .get(mezzanines.getMezzanines)
   .patch(upload.array("imageUrl"), mezzanines.updateMezzanines);
 
